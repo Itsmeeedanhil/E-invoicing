@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <rect x="2" y="2" width="44" height="44" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2.5" />
+  <!-- Roof Pediment -->
+  <path d="M 24 12 L 35 18 L 13 18 Z" fill="none" stroke="#059669" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+  <!-- Under-roof Bar -->
+  <line x1="12" y1="20" x2="36" y2="20" stroke="#059669" stroke-width="2" stroke-linecap="round" />
+  <!-- 4 Columns -->
+  <line x1="16" y1="22" x2="16" y2="31" stroke="#059669" stroke-width="2" stroke-linecap="round" />
+  <line x1="21.3" y1="22" x2="21.3" y2="31" stroke="#059669" stroke-width="2" stroke-linecap="round" />
+  <line x1="26.7" y1="22" x2="26.7" y2="31" stroke="#059669" stroke-width="2" stroke-linecap="round" />
+  <line x1="32" y1="22" x2="32" y2="31" stroke="#059669" stroke-width="2" stroke-linecap="round" />
+  <!-- Bottom Base Steps -->
+  <line x1="13" y1="33" x2="35" y2="33" stroke="#059669" stroke-width="2" stroke-linecap="round" />
+  <line x1="11" y1="36" x2="37" y2="36" stroke="#059669" stroke-width="2" stroke-linecap="round" />
+</svg>
