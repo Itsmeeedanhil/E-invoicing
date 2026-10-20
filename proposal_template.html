@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIR EIS Integration & CAS Compliance Proposal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 10mm 12mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #0f172a;
+      background-color: #ffffff;
+      line-height: 1.35;
+      font-size: 8.5pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      height: 277mm;
+      max-height: 277mm;
+      page-break-after: always;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+    
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    .content-wrap {
+      flex: 1;
+    }
+
+    /* Header Banner */
+    .header-box {
+      border-bottom: 2.5px solid #059669;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .doc-title {
+      font-size: 14pt;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .doc-subtitle {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #059669;
+      margin-top: 1px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .meta-badge {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 7.5pt;
+      font-weight: 700;
+      text-align: right;
+      line-height: 1.3;
+    }
+
+    /* Meta Table */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 14px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 7px 12px;
+      margin-bottom: 10px;
+      font-size: 8pt;
+    }
+
+    .meta-item {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .meta-label {
+      font-weight: 700;
+      color: #475569;
+      min-width: 100px;
+    }
+
+    .meta-value {
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    /* Callout Alert */
+    .alert-box {
+      background: #f0fdf4;
+      border-left: 3.5px solid #059669;
+      border-radius: 0 6px 6px 0;
+      padding: 7px 12px;
+      margin-bottom: 10px;
+      font-size: 8pt;
+      color: #1e293b;
+    }
+
+    .alert-title {
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 8pt;
+    }
+
+    /* Section Headings */
+    h2 {
+      font-size: 9.5pt;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 3px;
+      margin-top: 8px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    h2 .section-num {
+      background: #059669;
+      color: white;
+      font-size: 7.5pt;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    p {
+      margin-bottom: 5px;
+      color: #334155;
+      text-align: justify;
+      font-size: 8pt;
+      line-height: 1.35;
+    }
+
+    ul {
+      margin-left: 16px;
+      margin-bottom: 6px;
+    }
+
+    li {
+      margin-bottom: 3px;
+      color: #334155;
+      font-size: 8pt;
+      line-height: 1.3;
+    }
+
+    li strong {
+      color: #0f172a;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6px 0 8px 0;
+      font-size: 7.8pt;
+    }
+
+    th {
+      background-color: #0f172a;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: left;
+      padding: 5px 8px;
+      font-size: 7.5pt;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    th:first-child {
+      border-top-left-radius: 4px;
+    }
+    th:last-child {
+      border-top-right-radius: 4px;
+    }
+
+    td {
+      padding: 4.5px 8px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #334155;
+      vertical-align: top;
+      line-height: 1.3;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+
+    .table-highlight {
+      font-weight: 700;
+      color: #059669;
+      white-space: nowrap;
+    }
+
+    /* Sign-off box */
+    .signoff-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .signoff-box {
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 8px 12px;
+      background: #fafafa;
+    }
+
+    .signoff-header {
+      font-weight: 700;
+      font-size: 8pt;
+      color: #0f172a;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 4px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .sign-line {
+      margin-top: 30px;
+      border-top: 1px solid #475569;
+      padding-top: 3px;
+      font-size: 7.5pt;
+      color: #475569;
+    }
+
+    .page-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 7.2pt;
+      color: #94a3b8;
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 5px;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1 -->
+  <div class="page">
+    <div class="content-wrap">
+      <div class="header-box">
+        <div>
+          <div class="doc-title">Project & Technical Proposal</div>
+          <div class="doc-subtitle">BIR EIS Electronic Invoicing & CAS / PTI Compliance Package</div>
+        </div>
+        <div class="meta-badge">
+          <div>PROPOSAL NO: EIS-PROP-2026</div>
+          <div>CONFIDENTIAL & PROPRIETARY</div>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <span class="meta-label">Client Company:</span>
+          <span class="meta-value">[Client Company Name]</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Target System:</span>
+          <span class="meta-value">QuickBooks Desktop (Pro / Premier / Enterprise)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">System Provider:</span>
+          <span class="meta-value">[Your Business / Developer Name]</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Tax Regulations:</span>
+          <span class="meta-value">BIR RR 8-2022, RR 9-2021, TRAIN Law & EOPT</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Document Date:</span>
+          <span class="meta-value">October 2026</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Version:</span>
+          <span class="meta-value">1.0 (Final Architecture Proposal)</span>
+        </div>
+      </div>
+
+      <div class="alert-box">
+        <div class="alert-title">
+          <span>⚖️ Executive Summary & Legal Framework</span>
+        </div>
+        <p style="margin: 0;">
+          Under <strong>Revenue Regulations (RR) No. 8-2022</strong>, <strong>RR No. 9-2021</strong>, and the <strong>Ease of Paying Taxes Act (RA 11976)</strong>, covered Philippine taxpayers are required to issue electronic invoices and transmit sales data to the <strong>Bureau of Internal Revenue Electronic Invoicing System (BIR EIS)</strong>. This proposal outlines the deployment of a dedicated desktop middleware connecting your QuickBooks Desktop software to the BIR EIS Gateway without disrupting your operational workflows.
+        </p>
+      </div>
+
+      <h2><span class="section-num">1</span> System Compliance Deliverables (Documentation Package)</h2>
+      <p>To support your official <strong>Permit to Use (PTU) / Permit to Transmit (PTI/PTT) / CAS Accreditation</strong> application with the assigned Revenue District Office (RDO) / Large Taxpayers Service (LTS), the following complete technical binder is provided:</p>
+
+      <ul>
+        <li><strong>Software Identity & Specification Document:</strong> Comprehensive documentation of the middleware architecture, runtime profile (Tauri v2 + Rust backend + SQLite cache), and QuickBooks COM SDK connector.</li>
+        <li><strong>System Architecture & Data Flow Diagram:</strong> Visual diagrams detailing transaction flow from QuickBooks company files (<code>.QBW</code>) through local validation, SHA-256 hashing, and HTTPS transmission to the BIR EIS Gateway.</li>
+        <li><strong>BIR JSON Schema Specifications & Payload Mapping:</strong> Itemized field mapping between QuickBooks invoice records and the canonical BIR EIS JSON schema format.</li>
+        <li><strong>Audit Trail, Security Protocols, and Data Immutability Specifications:</strong>
+          <ul>
+            <li>SHA-256 digital payload signature generation for tamper-proof compliance.</li>
+            <li>Immutable chronological CAS audit logging tracking all creation, modification, and transmission events.</li>
+            <li>Local archival in Microsoft Access (<code>.accdb</code>) / SQLite database formats.</li>
+          </ul>
+        </li>
+        <li><strong>User Operation and System Administration Manual:</strong> End-to-end visual operational guide covering initial setup, QuickBooks syncing, tax code mapping, invoice printing, and transmission.</li>
+      </ul>
+
+      <h2><span class="section-num">2</span> Core Middleware Functional Modules</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 27%;">Module</th>
+            <th>Description & Technical Capabilities</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="table-highlight">1. QuickBooks COM Bridge</td>
+            <td>Direct Windows COM / QBXML bridge extracting invoices, customer profiles, items, and tax rates without manual CSV export/import steps.</td>
+          </tr>
+          <tr>
+            <td class="table-highlight">2. BIR EIS Tax Engine</td>
+            <td>Automated tax calculation engine supporting:
+              <br>• 12% VATable Sales (<code>Gross / 1.12</code>) & Output VAT (12%)
+              <br>• 0% VAT-Exempt & Zero-Rated Sales (Direct Exports / PEZA)
+              <br>• Senior Citizen & PWD 20% statutory discount + VAT exemption
+              <br>• Creditable Withholding Tax (BIR Form 2307: 1% Goods / 2% Services)
+            </td>
+          </tr>
+          <tr>
+            <td class="table-highlight">3. EIS API Gateway Transceiver</td>
+            <td>Automated batch JSON packaging, SHA-256 digital signature computation, and secure HTTPS transmission with official BIR Acknowledgement Numbers (<code>EIS-ACK</code>).</td>
+          </tr>
+          <tr>
+            <td class="table-highlight">4. CAS Print & PDF Engine</td>
+            <td>Multi-page synchronized continuous and A4 printing with mandatory BIR CAS accreditation footer and scannable verification QR codes.</td>
+          </tr>
+          <tr>
+            <td class="table-highlight">5. MS Access Exporter</td>
+            <td>1-click automated synchronization with local MS Access (<code>.accdb</code>) databases for offline audit readiness.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="page-footer">
+      <span>BIR EIS E-Invoicing Integration Middleware</span>
+      <span>Confidential & Proprietary</span>
+      <span>Page 1 of 2</span>
+    </div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page">
+    <div class="content-wrap">
+      <div class="header-box">
+        <div>
+          <div class="doc-title">Project & Technical Proposal</div>
+          <div class="doc-subtitle">Implementation Scope & Milestone Roadmap</div>
+        </div>
+        <div class="meta-badge">
+          <div>PROPOSAL NO: EIS-PROP-2026</div>
+          <div>PAGE 2 OF 2</div>
+        </div>
+      </div>
+
+      <h2><span class="section-num">3</span> Implementation & Certification Scope</h2>
+      <ul>
+        <li><strong>Phase 1: Middleware Deployment & QuickBooks Field Mapping</strong><br>
+        Deploy desktop middleware on client workstations; connect to live QuickBooks company file; configure BIR Form 2303 profile and map sales tax codes (<code>TAX</code>, <code>NON</code>, <code>ZERO</code>, <code>SENIOR</code>, <code>EWT</code>).</li>
+        <li><strong>Phase 2: EIS Portal Registration & API Credential Configuration</strong><br>
+        Assist client in enrolling with the BIR EIS Developer Portal; configure API Client ID, Client Secret, and Gateway Endpoints (Sandbox vs. Production).</li>
+        <li><strong>Phase 3: EIS Sandbox Testing & Mandatory Scenario Execution</strong><br>
+        Execute all mandated BIR test transaction scenarios (Standard VAT, Exempt, Zero-Rated, Senior/PWD, Withholding Tax); collect JSON logs, payload hashes, and <code>EIS-ACK</code> receipts for the BIR evaluation team.</li>
+        <li><strong>Phase 4: PTI/PTT Application Dossier Preparation & Technical Demo</strong><br>
+        Compile complete RDO accreditation binder; provide technical demonstration support during BIR evaluation; switch middleware to live Production mode upon permit issuance.</li>
+        <li><strong>Phase 5: Staff Training & Post-Implementation Warranty</strong><br>
+        Conduct hands-on training for accounting and IT personnel; provide 30-day post-go-live stabilization warranty for updates and schema support.</li>
+      </ul>
+
+      <h2><span class="section-num">4</span> Project Timeline & Milestones Schedule</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 14%;">Period</th>
+            <th style="width: 34%;">Milestone Focus</th>
+            <th>Key Deliverables & Outputs</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="table-highlight">Week 1</td>
+            <td>Environment Setup & QuickBooks Integration</td>
+            <td>Middleware installed; QuickBooks COM connection verified; Tax mapping and company profile fully configured.</td>
+          </tr>
+          <tr>
+            <td class="table-highlight">Week 2</td>
+            <td>BIR EIS Sandbox Testing & Verification</td>
+            <td>Sandbox credentials configured; Execution of mandatory BIR test scenarios; Collection of JSON logs and <code>EIS-ACK</code> receipts.</td>
+          </tr>
+          <tr>
+            <td class="table-highlight">Week 3</td>
+            <td>Accreditation Dossier Compilation</td>
+            <td>Finalization of RDO Technical Binder, System Architecture diagrams, and User/Admin Operations Manuals.</td>
+          </tr>
+          <tr>
+            <td class="table-highlight">Week 4</td>
+            <td>BIR Demo, Go-Live & Staff Training</td>
+            <td>Technical demo support with BIR evaluators; Production deployment; Staff training session and handover.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2><span class="section-num">5</span> Sign-off & Formal Acceptance</h2>
+      <p>By signing below, the parties agree to the implementation scope, deliverables, and timeline specified in this proposal.</p>
+
+      <div class="signoff-grid">
+        <div class="signoff-box">
+          <div class="signoff-header">Prepared & Submitted By:</div>
+          <div style="font-size: 8pt; font-weight: 700; color: #0f172a;">[Your Business / Developer Name]</div>
+          <div style="font-size: 7.5pt; color: #64748b;">Software Provider / Solutions Architect</div>
+          <div class="sign-line">Authorized Signature / Date</div>
+        </div>
+
+        <div class="signoff-box">
+          <div class="signoff-header">Accepted & Approved By:</div>
+          <div style="font-size: 8pt; font-weight: 700; color: #0f172a;">[Client Company Name]</div>
+          <div style="font-size: 7.5pt; color: #64748b;">Client Authorized Representative / CFO</div>
+          <div class="sign-line">Authorized Signature / Date</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>BIR EIS E-Invoicing Integration Middleware &copy; 2026</span>
+      <span>Compliant with BIR RR 8-2022 & RR 9-2021</span>
+      <span>Page 2 of 2</span>
+    </div>
+  </div>
+
+</body>
+</html>

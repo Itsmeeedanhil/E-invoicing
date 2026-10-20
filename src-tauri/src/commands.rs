@@ -87,9 +87,15 @@ pub fn delete_invoice(id: String, db: State<Database>) -> Result<(), String> {
 }
 
 #[tauri::command]
-pub fn test_quickbooks_connection(db: State<Database>) -> Result<QbConnectionStatus, String> {
+pub async fn test_quickbooks_connection(db: State<'_, Database>) -> Result<QbConnectionStatus, String> {
     let settings = db.get_company_settings().map_err(|e| e.to_string())?;
-    let status = QuickBooksSdk::test_connection(&settings.qb_company_path);
+    let qb_path = settings.qb_company_path.clone();
+
+    let status = tauri::async_runtime::spawn_blocking(move || {
+        QuickBooksSdk::test_connection(&qb_path)
+    })
+    .await
+    .map_err(|e| format!("Background task error: {}", e))?;
 
     let _ = db.add_audit_log(
         "QB_TEST_CONNECTION",
@@ -103,18 +109,25 @@ pub fn test_quickbooks_connection(db: State<Database>) -> Result<QbConnectionSta
 }
 
 #[tauri::command]
-pub fn sync_quickbooks_invoices(db: State<Database>) -> Result<Vec<Invoice>, String> {
+pub async fn sync_quickbooks_invoices(db: State<'_, Database>) -> Result<Vec<Invoice>, String> {
     let settings = db.get_company_settings().map_err(|e| e.to_string())?;
     let tax_mappings = db.get_tax_mappings().map_err(|e| e.to_string())?;
 
-    // Fetch live invoices directly from active QuickBooks Desktop session
-    let synced = QuickBooksSdk::fetch_live_invoices(
-        &settings.qb_company_path,
-        None,
-        50,
-        &tax_mappings,
-        &settings,
-    )?;
+    let settings_clone = settings.clone();
+    let tax_mappings_clone = tax_mappings.clone();
+
+    // Fetch live invoices on a background worker thread so the UI window never freezes
+    let synced = tauri::async_runtime::spawn_blocking(move || {
+        QuickBooksSdk::fetch_live_invoices(
+            &settings_clone.qb_company_path,
+            None,
+            50,
+            &tax_mappings_clone,
+            &settings_clone,
+        )
+    })
+    .await
+    .map_err(|e| format!("Background task error: {}", e))??;
 
     let mut saved_count = 0;
     for inv in &synced {
@@ -244,9 +257,15 @@ pub fn get_access_db_status(db: State<Database>) -> Result<AccessDbStatus, Strin
 }
 
 #[tauri::command]
-pub fn initialize_ms_access_db(db: State<Database>) -> Result<String, String> {
+pub async fn initialize_ms_access_db(db: State<'_, Database>) -> Result<String, String> {
     let settings = db.get_company_settings().map_err(|e| e.to_string())?;
-    let msg = AccessDbBridge::initialize_database(&settings.access_db_path)?;
+    let access_path = settings.access_db_path.clone();
+
+    let msg = tauri::async_runtime::spawn_blocking(move || {
+        AccessDbBridge::initialize_database(&access_path)
+    })
+    .await
+    .map_err(|e| format!("Background task error: {}", e))??;
     
     let _ = db.add_audit_log(
         "INIT_ACCESS_DB",
@@ -260,10 +279,16 @@ pub fn initialize_ms_access_db(db: State<Database>) -> Result<String, String> {
 }
 
 #[tauri::command]
-pub fn export_to_ms_access(db: State<Database>) -> Result<String, String> {
+pub async fn export_to_ms_access(db: State<'_, Database>) -> Result<String, String> {
     let settings = db.get_company_settings().map_err(|e| e.to_string())?;
     let invoices = db.get_all_invoices().map_err(|e| e.to_string())?;
-    let msg = AccessDbBridge::export_invoices_to_access(&settings.access_db_path, &invoices)?;
+    let access_path = settings.access_db_path.clone();
+
+    let msg = tauri::async_runtime::spawn_blocking(move || {
+        AccessDbBridge::export_invoices_to_access(&access_path, &invoices)
+    })
+    .await
+    .map_err(|e| format!("Background task error: {}", e))??;
 
     let _ = db.add_audit_log(
         "EXPORT_TO_ACCESS",

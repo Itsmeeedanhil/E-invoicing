@@ -20,8 +20,16 @@ function Create-RequestProcessor {
 }
 
 function Open-QBSession {
-    param([string]$compFile, [string]$app)
+    param([string]$compFile, [string]$app, [bool]$fastTest = $false)
     
+    # If doing a quick background check, verify if QuickBooks (QBW32.EXE / QBW.EXE) is running first
+    if ($fastTest) {
+        $qbProc = Get-Process -Name "QBW32", "QBW" -ErrorAction SilentlyContinue
+        if (-not $qbProc) {
+            throw "QuickBooks Desktop is not currently running. Launch QuickBooks and open your company file to sync live invoices."
+        }
+    }
+
     $rp = Create-RequestProcessor
     $rp.OpenConnection2("", $app, 1)
     
@@ -30,7 +38,10 @@ function Open-QBSession {
     try {
         $ticket = $rp.BeginSession("", 0)
     } catch {
-        # Fallback with specified company file path
+        if ($fastTest) {
+            throw $_
+        }
+        # Fallback with specified company file path only during explicit sync
         if ($compFile -and $compFile -ne "") {
             $ticket = $rp.BeginSession($compFile, 0)
         } else {
@@ -61,13 +72,13 @@ function Close-QBSession {
 if ($Action -eq "test") {
     $session = $null
     try {
-        $session = Open-QBSession -compFile $CompanyFile -app $AppName
+        $session = Open-QBSession -compFile $CompanyFile -app $AppName -fastTest $true
         Close-QBSession -session $session
         Write-Output '{"success": true, "connected": true, "mode": "Live COM (QuickBooks Active Session)", "message": "Successfully connected to live QuickBooks Desktop session."}'
     } catch {
         if ($session) { Close-QBSession -session $session }
         $errMsg = $_.Exception.Message
-        Write-Output ('{"success": false, "connected": false, "mode": "Permission / Setup Required", "message": "' + ($errMsg -replace '"', '\"') + '"}')
+        Write-Output ('{"success": false, "connected": false, "mode": "Offline / QuickBooks Closed", "message": "' + ($errMsg -replace '"', '\"') + '"}')
     }
     exit 0
 }
